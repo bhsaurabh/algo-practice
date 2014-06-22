@@ -12,17 +12,26 @@ public class Insertion {
      * @param a: array to be sorted
      */
    public static void sort(Comparable[] a) {
-       // Insert elements in position one-by-one
-       for (int i = 0; i < a.length; i++) {
-           for (int j = i; j > 0; j--) {
-               if (less(a[j], a[j-1])) {
-                   exch(a, j-1, j);
-               } else {
-                   break;   // element is in position
-               }
-           }
-       }
-   } 
+        sort(a, 0, a.length-1);
+   }
+   
+   /**
+    * Sort an array in a given range
+    * 
+    * @param a: array to be sorted
+    * @param lo, hi: lower & upper bounds of range to sort in
+    */
+   public static void sort(Comparable[] a, int lo, int hi) {
+        for (int i = lo; i <= hi; i++) {
+            for (int j = i; j > lo; j--) {
+                if (less(a[j], a[j-1])) {
+                    exch(a, j, j-1);
+                } else {
+                    break;  // element is in position
+                }
+            }
+        }       
+   }
    
    /*
    Check if an element is lesser than another

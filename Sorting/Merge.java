@@ -24,6 +24,12 @@ public class Merge {
         if (hi <= lo) {
             return;
         }
+        // cutoff to insertion sort for small arrays
+        int CUTOFF = 7;
+        if (hi <= lo + CUTOFF - 1) {
+            Insertion.sort(a, lo, hi);
+            return;
+        }
         int mid = lo + (hi - lo) / 2;
         // sort recursively
         sort(a, aux, lo, mid);
