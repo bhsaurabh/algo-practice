@@ -6,7 +6,7 @@ import java.util.Scanner;
  */
 public class TopM {
     public static void main(String[] args) {
-        UnorderedPQ<Integer> pq = new UnorderedPQ<Integer>();
+        MinPQ<Integer> pq = new MinPQ<Integer>();
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter M: ");
         int M = sc.nextInt();
