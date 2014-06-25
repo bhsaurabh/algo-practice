@@ -11,10 +11,12 @@ public class BST<Key extends Comparable<Key>, Value> {
         private Key key;
         private Value val;
         private Node left, right;
+        private int count;  // number of elements rooted here
         
         public Node(Key key, Value val) {
             this.key = key;
             this.val = val;
+            this.count = 0;  // this is set in the put() method
         }
     }
     
@@ -78,6 +80,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             // this is the Node to be updated
             x.val = val;
         }
+        x.count = 1 + size(x.left) + size(x.right);  // update sub-tree counts
         return x;   // return a link for the parent's use
     }
     
@@ -193,4 +196,23 @@ public class BST<Key extends Comparable<Key>, Value> {
             return tmp;
         }
     }
+    
+    /**
+     * Get number of elements in the ST
+     * 
+     * @return number of elements in ST
+     */
+    public int size() {
+        return size(root);
+    }
+    
+    /*
+    Get subtree count of a node 
+    */
+    private int size(Node x) {
+        if (x == null) {
+            return 0;
+        }
+        return x.count;
+    } 
 }
