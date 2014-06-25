@@ -2,6 +2,9 @@ import java.lang.Comparable;
 
 /**
  * Dijkstra's 3-way quick sort
+ * O(Nlgn) generally; 
+ * can perform in linear time with large number of duplicate keys
+ * O(N!/(x1!*x2!*...xn!)), where xi is the number of times ith element is repeated
  */
 public class Dijkstra {
     /**

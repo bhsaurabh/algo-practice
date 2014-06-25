@@ -1,5 +1,11 @@
 import java.lang.Comparable;
 
+/**
+ * An implementation of the classic quick sort algorithm
+ * Worst case O(n^2), generally & most probably O(nlgn)
+ * In place sorting algorithm
+ * Performs poorly when large number of equal keys are present
+ */
 public class Quick {
     /**
      * Sort an array of comparables using quicksort

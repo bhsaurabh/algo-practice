@@ -2,6 +2,8 @@ import java.lang.Comparable;
 
 /**
  * Sorts an array using heap sort
+ * O(NlgN) worst case guarantee, in-place sorting algorithm
+ * Not stable and makes poor use of cache memory
  */
 public class Heap {
     /**
