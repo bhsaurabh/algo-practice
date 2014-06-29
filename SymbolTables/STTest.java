@@ -47,12 +47,18 @@ public class STTest {
         }
         System.out.println();
         // check deletion
-        System.out.println("Deleting Node with Key 2...");
-        bst.delete(2);
+        System.out.println("Deleting Node with Key 3...");
+        bst.delete(3);
         keys = bst.keys();
         for (int i : keys) {
             System.out.print(i + " ");
         }
         System.out.println();
+        // check counts after deletion
+        System.out.println("Size of BST: " + bst.size());
+        System.out.println("Rank of 3: " + bst.rank(3) + ", Expected: 2");
+        System.out.println("Rank of 5: " + bst.rank(5) + ", Expected: 3");
+        System.out.println("Rank of -1: " + bst.rank(-1) + ", Expected: 0");
+        System.out.println("Rank of 10: " + bst.rank(10) + ", Expected: 4");
     }
 }
