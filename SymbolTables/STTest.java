@@ -1,3 +1,6 @@
+/**
+ * Tests for BST data structure
+ */
 public class STTest {
     public static void main(String[] args) {
         BST<Integer, String> bst = new BST<Integer, String>();
@@ -39,6 +42,14 @@ public class STTest {
         // Iterable test
         System.out.println("Keys in sorted order: ");
         Iterable<Integer> keys = bst.keys();
+        for (int i : keys) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        // check deletion
+        System.out.println("Deleting Node with Key 2...");
+        bst.delete(2);
+        keys = bst.keys();
         for (int i : keys) {
             System.out.print(i + " ");
         }

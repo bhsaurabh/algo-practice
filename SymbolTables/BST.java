@@ -100,11 +100,21 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @return the min key in the BST
      */
     public Key min() {
-        Node x = root;
+        Node x = min(root);
+        if (x == null) {
+            return null;
+        }
+        return x.key;
+    }
+    
+    /*
+    Find minimum key in BST
+    */
+    private Node min(Node x) {
         while (x.left != null) {
             x = x.left;
         }
-        return x.key;
+        return x;
     }
     
     /**
@@ -113,11 +123,21 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @return the max key in the BST
      */
     public Key max() {
-        Node x = root;
+        Node x = max(root);
+        if (x == null) {
+            return null;
+        }
+        return x.key;
+    }
+    
+    /*
+    Find maximum key in BST
+    */
+    private Node max(Node x) {
         while (x.right != null) {
             x = x.right;
         }
-        return x.key;
+        return x;
     }
     
     /**
@@ -292,5 +312,65 @@ public class BST<Key extends Comparable<Key>, Value> {
         postorder(x.left, q);     // left
         postorder(x.right, q);    // right   
         q.enqueue(x.key);       // root
+    }
+    
+    /**
+     * Remove a key from the symbol table
+     * Uses Hibbard deletion - this is asymmetric!!!!
+     * 
+     * @param key: key to be deleted
+     */
+    public void delete(Key key) {
+        root = delete(root, key);
+    }
+    
+    /*
+    Recursive deletion routine
+    */
+    private Node delete(Node x, Key key) {
+        if (x == null) {
+            // key not found!
+            return null;
+        }
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) {
+            x.left = delete(x.left, key);
+        } else if (cmp > 0) {
+            x.right = delete(x.right, key);
+        } else {
+            // delete this node!!
+            if (x.right == null) {
+                return x.left;  // return child
+            }
+            // use hibbard deletion
+            // step 1: find next minimum and hold on to it
+            Node t = min(x.right);
+            // Step 2: Make min's right child point to deleteMin(x.right)
+            t.right = deleteMin(x.right);
+            t.left = x.left;
+            // Step 3: replace link from x to t
+            t.count = 1 + size(t.left) + size(t.right);
+            return t;
+        }
+        x.count = 1 + size(x.left) + size(x.right);
+        return x;
+    }
+    
+    /*
+    Recursively find and delete the minimum element in a BST
+    */
+    private Node deleteMin(Node x) {
+        if (x == null) {
+            return null;
+        }
+        if (x.left != null) {
+            x.left = deleteMin(x.left);
+        }
+        else {
+            return x.right;  // return right child 
+        }
+        // update counts
+        x.count = 1 + size(x.left) + size(x.right);
+        return x;
     }
 }
