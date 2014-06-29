@@ -1,4 +1,5 @@
 import java.lang.Comparable;
+import java.lang.Iterable;
 
 /**
  * A binary search tree implementation of a symbol table
@@ -16,7 +17,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         public Node(Key key, Value val) {
             this.key = key;
             this.val = val;
-            this.count = 0;  // this is set in the put() method
+            this.count = 1;  // this is set in the put() method
         }
     }
     
@@ -215,4 +216,81 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
         return x.count;
     } 
+    
+    /**
+     * Get the number of keys < key
+     * 
+     * @param key: key whose rank is to be found
+     * 
+     * @return rank: the rank of param key
+     */
+    public int rank(Key key) {
+        return rank(root, key);  // use recursive routine    
+    }
+    
+    /*
+    Recursive routine to calculate rank
+    */
+    private int rank(Node x, Key key) {
+        if (x == null) {
+            // reached end of tree, no key in BST is lesser than given param
+            return 0;
+        }
+        int cmp = key.compareTo(x.key);
+        if (cmp == 0) {
+            return size(x.left);
+        } else if (cmp < 0) {
+            return rank(x.left, key);
+        } else {
+            return 1 + size(x.left) + rank(x.right, key);
+        }
+    }
+    
+    /**
+     * Get all keys in BST in sorted order
+     * 
+     * @return: an iterable over all keys in sorted order
+     */
+    public Iterable<Key> keys() {
+        // use inorder traversal to get keys in sorted order
+        Queue<Key> q = new Queue<Key>();    // queues are iterable data structures
+        inorder(root, q);   // add keys to queue recursively
+        return q;
+    }
+    
+    /*
+    Recursively create interable having keys in inorder
+    */
+    private void inorder(Node x, Queue<Key> q) {
+        if (x == null) {
+            return;
+        }   
+        inorder(x.left, q);     // left
+        q.enqueue(x.key);       // root
+        inorder(x.right, q);    // right
+    }
+    
+    /*
+    Recursively create interable having keys in preorder
+    */
+    private void preorder(Node x, Queue<Key> q) {
+        if (x == null) {
+            return;
+        }   
+        q.enqueue(x.key);       // root
+        preorder(x.left, q);     // left
+        preorder(x.right, q);    // right
+    }
+    
+    /*
+    Recursively create interable having keys in postorder
+    */
+    private void postorder(Node x, Queue<Key> q) {
+        if (x == null) {
+            return;
+        }
+        postorder(x.left, q);     // left
+        postorder(x.right, q);    // right   
+        q.enqueue(x.key);       // root
+    }
 }

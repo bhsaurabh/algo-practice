@@ -3,11 +3,11 @@ public class STTest {
         BST<Integer, String> bst = new BST<Integer, String>();
         // insertions
         System.out.println("Inserting elements...");
-        bst.put(1, "one");
-        bst.put(2, "two");
         bst.put(3, "three");
-        bst.put(4, "four");
         bst.put(5, "five");
+        bst.put(1, "one");
+        bst.put(4, "four");
+        bst.put(2, "two");
         // retrieval
         System.out.println("1 : " + bst.get(1));
         System.out.println("4 : " + bst.get(4));
@@ -30,5 +30,18 @@ public class STTest {
         System.out.println("Ceiling of 6: " + bst.ceil(6));
         System.out.println("Ceiling of 1: " + bst.ceil(1));
         System.out.println("Ceiling of 0: " + bst.ceil(0));
+        // rank and size operations
+        System.out.println("Size of BST: " + bst.size());
+        System.out.println("Rank of 3: " + bst.rank(3) + ", Expected: 2");
+        System.out.println("Rank of 5: " + bst.rank(5) + ", Expected: 4");
+        System.out.println("Rank of -1: " + bst.rank(-1) + ", Expected: 0");
+        System.out.println("Rank of 10: " + bst.rank(10) + ", Expected: 5");
+        // Iterable test
+        System.out.println("Keys in sorted order: ");
+        Iterable<Integer> keys = bst.keys();
+        for (int i : keys) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
     }
 }
