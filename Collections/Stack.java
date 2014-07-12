@@ -2,6 +2,7 @@ import java.lang.Iterable;
 import java.lang.UnsupportedOperationException;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
+import java.util.ConcurrentModificationException;
 
 /**
  * A stack data structure
@@ -11,12 +12,15 @@ import java.util.Iterator;
 public class Stack<Item> implements Iterable<Item> {
     private Item[] s;
     private int N;  // location of next insertion
+    private int push_count, pop_count;  // number of pushes/pops performed
 
     /**
      * Constructor initialises the stack
      */
     public Stack() {
         this.s = (Item[]) new Object[1];  // cannot create arrays of generics
+        this.push_count = 0;
+        this.pop_count = 0;
     }
     
     /*
@@ -41,6 +45,7 @@ public class Stack<Item> implements Iterable<Item> {
             resize(s.length * 2);
         }
         s[N++] = item;
+        push_count++;
     }
     
     /**
@@ -58,6 +63,7 @@ public class Stack<Item> implements Iterable<Item> {
         if (N == s.length/4) {
             resize(s.length/2);
         }
+        pop_count++;
         return item;
     }
     
@@ -93,16 +99,26 @@ public class Stack<Item> implements Iterable<Item> {
     
     private class ReverseArrayIterator implements Iterator<Item> {
         private int current;
+        private int pushes, pops;
         
         public ReverseArrayIterator() {
             this.current = N;
+            // store the number of pushes and pops for fail fast iteration
+            pushes = push_count;
+            pops = pop_count;
         }
         
         public boolean hasNext() {
+            if ((pushes != push_count) || (pops != pop_count)) {
+                throw new ConcurrentModificationException("Stack modified during interation.");
+            }
             return current > 0;
         }
         
         public Item next() {
+            if ((pushes != push_count) || (pops != pop_count)) {
+                throw new ConcurrentModificationException("Stack modified during interation.");
+            }
             if (!hasNext()) {
                 throw new NoSuchElementException("Underflow. Stack is empty.");
             }

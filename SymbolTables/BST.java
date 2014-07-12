@@ -13,11 +13,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         private Value val;
         private Node left, right;
         private int count;  // number of elements rooted here
+        private int height; // height of the tree rooted here
         
         public Node(Key key, Value val) {
             this.key = key;
             this.val = val;
             this.count = 1;  // this is set in the put() method
+            this.height = 1;    // initial new node has height of 1
         }
     }
     
@@ -70,7 +72,7 @@ public class BST<Key extends Comparable<Key>, Value> {
     */
     private Node put(Node x, Key key, Value val) {
         if (x == null) {
-            return new Node(key, val);
+            return new Node(key, val);  // will set new Node's height as 1
         }
         int cmp = key.compareTo(x.key);
         if (cmp < 0) {
@@ -82,7 +84,25 @@ public class BST<Key extends Comparable<Key>, Value> {
             x.val = val;
         }
         x.count = 1 + size(x.left) + size(x.right);  // update sub-tree counts
+        x.height = 1 + max(height(x.left), height(x.right));
         return x;   // return a link for the parent's use
+    }
+    
+    /**
+     * @return height: The height of the tree
+     */
+    public int height() {
+        return height(root); 
+    }
+    
+    /*
+    Get the height of the tree rooted at a node
+    */
+    private int height(Node x) {
+        if (x == null) {
+            return 0;
+        }
+        return x.height;
     }
     
     /**
@@ -372,5 +392,28 @@ public class BST<Key extends Comparable<Key>, Value> {
         // update counts
         x.count = 1 + size(x.left) + size(x.right);
         return x;
+    }
+    
+    /**
+     * Check if the tree has correct count values throughout
+     * 
+     * @return true, if consistent; false otherwise
+     */
+    public boolean isSizeConsistent() {
+        return isSizeConsistent(root); 
+    }
+    
+    /*
+    Check if the count entry has correct values
+    */
+    private boolean isSizeConsistent(Node x) {
+        if (x == null) {
+            return true;
+        }
+        if (x.count != (1 + size(x.left) + size(x.right))) {
+            return false;
+        }
+        // now examine children
+        return isSizeConsistent(x.left) & isSizeConsistent(x.right);
     }
 }
